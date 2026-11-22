@@ -58,7 +58,7 @@ class _PostsScreenState extends State<PostsScreen> {
                 });
                 await _postsFuture;
               },
-              // Rebuilds the list (and the stars) whenever favoritesBox changes
+
               child: ValueListenableBuilder<Box<Post>>(
                 valueListenable:
                     Hive.box<Post>('favoritesBox').listenable(),
