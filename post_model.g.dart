@@ -1,7 +1,3 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// (Running `dart run build_runner build --delete-conflicting-outputs`
-//  will regenerate this file with identical logic.)
-
 part of 'post_model.dart';
 
 class PostAdapter extends TypeAdapter<Post> {
