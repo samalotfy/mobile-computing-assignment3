@@ -66,14 +66,6 @@ Design decisions:
 - **A copy of the Post is saved:** a `HiveObject` can only live in one box at a time, so putting the same instance in both boxes throws an error. A new `Post` is created from the same values instead.
 - **Instant UI updates:** `ValueListenableBuilder` listens to `favoritesBox`, so stars and the Favorites screen rebuild automatically whenever it changes.
 
-## Assignment Requirements
-
-- [x] `favorites_service.dart` with `toggleFavorite`, `isFavorite` and `getFavorites`
-- [x] Filled star (`Icons.star`) for favorites and outlined star (`Icons.star_border`) for others, updating immediately
-- [x] `favorites_screen.dart` listing all saved favorites with the same card design as the posts list
-- [x] AppBar button on `PostsScreen` that opens the Favorites screen
-- [x] "No favorites yet" message when the box is empty
-- [x] Favorites saved in Hive so they persist across restarts and offline use
 
 ## How to Run
 
