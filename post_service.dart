@@ -4,41 +4,29 @@ import 'package:http/http.dart' as http;
 import '../models/post_model.dart';
 
 class PostService {
-  static const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  //static const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  static const String apiUrl = 'http://127.0.0.1:3000/posts';
 
   Future<List<Post>> getPosts() async {
     var box = await Hive.openBox<Post>('postsBox');
 
-   // try {
-      final response = await http.get(
-  Uri.parse(apiUrl),
-  headers: {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)',
-    'Accept': 'application/json',
-  },
-);
-print('Status code: ${response.statusCode}');
-    //}
+    try {
+       final response = await http.get(Uri.parse(apiUrl));
 
-    //   // 1. Try to fetch online
-    //   final response = await http.get(Uri.parse(apiUrl));
+       if (response.statusCode == 200) {
+         List<dynamic> data = json.decode(response.body);
+         List<Post> onlinePosts = data.map((e) => Post.fromJson(e)).toList();
 
-    //   if (response.statusCode == 200) {
-    //     List<dynamic> data = json.decode(response.body);
-    //     List<Post> onlinePosts = data.map((e) => Post.fromJson(e)).toList();
+         await box.clear();
+         await box.addAll(onlinePosts);
 
-    //     // 2. Save to Hive
-    //     await box.clear();
-    //     await box.addAll(onlinePosts);
+         print('Loaded from API and cached to Hive: ${onlinePosts.length}');
+         return onlinePosts;
+       }
+     } catch (e) {
+       print('API Failed, reason: $e');
+    }
 
-    //     print('Loaded from API and cached to Hive: ${onlinePosts.length}');
-    //     return onlinePosts;
-    //   }
-    // } catch (e) {
-    //   print('API Failed, reason: $e');
-    //}
-
-    // 3. OFFLINE MODE: return from Hive (works in airplane mode)
     if (box.isNotEmpty) {
       print('Loaded from Hive offline: ${box.length}');
       return box.values.toList();
